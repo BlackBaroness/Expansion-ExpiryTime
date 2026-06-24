@@ -25,6 +25,9 @@ public class ConfigurationLoader {
     private final String secondsPath = "seconds";
     private final String secondsDefault = "&6 сек.";
 
+    private final String unitsToShowPath = "units_to_show";
+    private final int unitsToShowDefault = 2;
+
     private final PlaceholderExpansion expansion;
 
     public ConfigurationLoader(PlaceholderExpansion expansion) {
@@ -39,6 +42,7 @@ public class ConfigurationLoader {
         map.put(hoursPath, hoursDefault);
         map.put(minutesPath, minutesDefault);
         map.put(secondsPath, secondsDefault);
+        map.put(unitsToShowPath, unitsToShowDefault);
         return map;
     }
 
@@ -49,7 +53,8 @@ public class ConfigurationLoader {
                 expansion.getString(daysPath, daysDefault),
                 expansion.getString(hoursPath, hoursDefault),
                 expansion.getString(minutesPath, minutesDefault),
-                expansion.getString(secondsPath, secondsDefault)
+                expansion.getString(secondsPath, secondsDefault),
+                expansion.getInt(unitsToShowPath, unitsToShowDefault)
         );
     }
 }

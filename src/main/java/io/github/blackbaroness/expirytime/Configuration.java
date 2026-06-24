@@ -6,6 +6,7 @@ public record Configuration(
         String days,
         String hours,
         String minutes,
-        String seconds
+        String seconds,
+        int unitsToShow
 ) {
 }

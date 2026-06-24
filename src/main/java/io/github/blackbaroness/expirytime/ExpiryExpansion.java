@@ -102,28 +102,43 @@ public class ExpiryExpansion extends PlaceholderExpansion implements Configurabl
     }
 
     private String format(Duration duration) {
-        final StringBuilder builder = new StringBuilder();
+        final RenderContext context = new RenderContext(duration);
 
-        duration = append(builder, duration, ChronoUnit.DAYS, config.days());
-        duration = append(builder, duration, ChronoUnit.HOURS, config.hours());
-        duration = append(builder, duration, ChronoUnit.MINUTES, config.minutes());
-        append(builder, duration, ChronoUnit.SECONDS, config.seconds());
+        render(context, ChronoUnit.DAYS, config.days());
+        render(context, ChronoUnit.HOURS, config.hours());
+        render(context, ChronoUnit.MINUTES, config.minutes());
+        render(context, ChronoUnit.SECONDS, config.seconds());
 
-        return builder.toString();
+        return context.builder.toString();
     }
 
     // inspired by: https://github.com/BlackBaroness/duration-serializer-java/blob/9e31e75fd0d91516c03aa560536b368894f8d885/src/main/java/io/github/blackbaroness/durationserializer/DurationSerializer.java#L13
-    private Duration append(StringBuilder builder, Duration current, TemporalUnit unit, String label) {
-        if (!builder.isEmpty()) { // a subject to change, that's why we use StringBuilder
-            return current;
+    private void render(RenderContext context, TemporalUnit unit, String label) {
+        if (context.renderCount == config.unitsToShow()) {
+            return;
         }
 
-        final long value = current.dividedBy(unit.getDuration());
+        final long value = context.duration.dividedBy(unit.getDuration());
         if (value < 1) {
-            return current;
+            return;
         }
 
-        builder.append(value).append(" ").append(label);
-        return current.minus(value, unit);
+        if (context.renderCount > 0) {
+            context.builder.append(" ");
+        }
+
+        context.builder.append(value).append(label);
+        context.duration = context.duration.minus(value, unit);
+        context.renderCount += 1;
+    }
+
+    private class RenderContext {
+        private final StringBuilder builder = new StringBuilder(config.numbersColor());
+        private int renderCount = 0;
+        private Duration duration;
+
+        private RenderContext(Duration duration) {
+            this.duration = duration;
+        }
     }
 }
