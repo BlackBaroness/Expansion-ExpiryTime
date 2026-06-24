@@ -1,4 +1,4 @@
-package daedal.expirytime;
+package io.github.blackbaroness.expirytime;
 
 import me.clip.placeholderapi.expansion.Configurable;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;

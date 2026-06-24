@@ -1,4 +1,4 @@
-package daedal.expirytime;
+package io.github.blackbaroness.expirytime;
 
 public record Configuration(
         String numbersColor,
