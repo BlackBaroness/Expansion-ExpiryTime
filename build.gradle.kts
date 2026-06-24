@@ -28,3 +28,7 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+tasks.jar {
+    archiveFileName = "${rootProject.name}.jar"
+}
